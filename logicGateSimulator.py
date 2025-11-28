@@ -139,9 +139,13 @@ class LogicCircuitSimulator:
     def visualize_circuit(expression_tree):
         """Simple circuit visualization with proper gate shapes"""
         root = tk.Tk()
-        root.title("Logic Circuit")
+        root.title("Logic Circuit Visualization")
         canvas = Canvas(root, width=1000, height=700, bg='white')
         canvas.pack()
+
+        # Title
+        canvas.create_text(500, 30, text="Logic Circuit Diagram",
+                           font=('Arial', 18, 'bold'), fill='darkblue')
 
         # Draw proper gate shapes
         def draw_and_gate(x, y):
@@ -217,11 +221,36 @@ class LogicCircuitSimulator:
                     canvas.create_line(right_out_x, right_out_y, x, y + 10, width=2)
                 return gate_out_x, gate_out_y
 
-        # Start drawing
-        out_x, out_y = draw_circuit(expression_tree, 700, 300)
+        # Start drawing from center
+        out_x, out_y = draw_circuit(expression_tree, 700, 350)
 
         if out_x:
-            canvas.create_text(out_x + 40, out_y, text="OUTPUT",
+            # Draw output label
+            canvas.create_line(out_x, out_y, out_x + 30, out_y, width=2)
+            canvas.create_text(out_x + 70, out_y, text="OUTPUT",
                                font=('Arial', 14, 'bold'), fill='blue')
 
+
         root.mainloop()
+
+    def run(self):
+        """Main interface"""
+        expression = input("Enter logic expression: ")
+
+        parsed = self.parse_expression(expression)
+        rpn = self.change_to_rpn(parsed)
+        expression_tree = self.build_expression_tree(rpn)
+
+        while True:
+            print("\n1. Show truth table")
+            print("2. Visualize circuit")
+            print("3. Exit")
+
+            choice = input("\nChoice: ")
+
+            if choice == '1':
+                self.generate_truth_table(expression_tree)
+            elif choice == '2':
+                self.visualize_circuit(expression_tree)
+            elif choice == '3':
+                return
