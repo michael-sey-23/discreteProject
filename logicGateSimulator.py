@@ -4,7 +4,6 @@ from node import *
 
 class LogicCircuitSimulator:
     def __init__(self):
-        self.node_counter = None
         self.variables = set()
 
     @staticmethod
@@ -137,7 +136,7 @@ class LogicCircuitSimulator:
 
     @staticmethod
     def visualize_circuit(expression_tree):
-        """Simple circuit visualization with proper gate shapes"""
+        # Simple circuit visualization with proper gate shapes
         root = tk.Tk()
         root.title("Logic Circuit Visualization")
         canvas = Canvas(root, width=1000, height=700, bg='white')
@@ -149,45 +148,44 @@ class LogicCircuitSimulator:
 
         # Draw proper gate shapes
         def draw_and_gate(x, y):
-            """AND gate - D shape"""
             # Rectangle part
             canvas.create_rectangle(x, y, x + 40, y + 40, fill='lightblue', outline='black', width=2)
-            # Curved part (right side)
-            canvas.create_arc(x + 20, y, x + 60, y + 40, start=270, extent=180,
-                              fill='lightblue', outline='black', width=2)
+            # Curved part
+            canvas.create_arc(x + 20, y, x + 60, y + 40, start=270, extent=180, fill='lightblue', outline='black', width=2)
+            # text
             canvas.create_text(x + 30, y + 20, text="AND", font=('Arial', 10, 'bold'))
             return x + 60, y + 20
 
         def draw_or_gate(x, y):
-            """OR gate - curved shape"""
+            # OR gate
             points = [x, y, x + 20, y, x + 50, y + 20, x + 20, y + 40, x, y + 40, x + 15, y + 20]
-            canvas.create_polygon(points, fill='lightgreen', outline='black',
-                                  smooth=True, width=2)
+            canvas.create_polygon(points, fill='lightgreen', outline='black', smooth=True, width=2)
             canvas.create_text(x + 25, y + 20, text="OR", font=('Arial', 10, 'bold'))
             return x + 50, y + 20
 
         def draw_not_gate(x, y):
-            """NOT gate - triangle with circle"""
-            # Triangle
+            # NOT gate
+            # Triangle part
             points = [x, y, x, y + 30, x + 30, y + 15]
             canvas.create_polygon(points, fill='lightyellow', outline='black', width=2)
-            # Small circle at tip
+
+            # Small circle at the tip
             canvas.create_oval(x + 30, y + 10, x + 40, y + 20, fill='white', outline='black', width=2)
             canvas.create_text(x + 15, y + 15, text="NOT", font=('Arial', 8, 'bold'))
             return x + 40, y + 15
 
         def draw_input(x, y, name):
-            """Draw input variable as a circle"""
+            # Draw input variable as a circle
             canvas.create_oval(x, y, x + 40, y + 40, fill='lightcoral', outline='black', width=2)
             canvas.create_text(x + 20, y + 20, text=name, font=('Arial', 12, 'bold'))
             return x + 40, y + 20
 
         def draw_circuit(node, x, y):
-            """Recursively draw the circuit"""
+            # Recursively draw the circuit
             if node is None:
                 return None, None
 
-            # Base case: variable (input)
+            # Base case: input
             if node.type == 'VAR':
                 return draw_input(x, y, node.value)
 
@@ -227,14 +225,12 @@ class LogicCircuitSimulator:
         if out_x:
             # Draw output label
             canvas.create_line(out_x, out_y, out_x + 30, out_y, width=2)
-            canvas.create_text(out_x + 70, out_y, text="OUTPUT",
-                               font=('Arial', 14, 'bold'), fill='blue')
-
+            canvas.create_text(out_x + 70, out_y, text="OUTPUT", font=('Arial', 14, 'bold'), fill='blue')
 
         root.mainloop()
 
     def run(self):
-        """Main interface"""
+        # Main interface
         expression = input("Enter logic expression: ")
 
         parsed = self.parse_expression(expression)
