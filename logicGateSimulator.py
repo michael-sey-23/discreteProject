@@ -143,8 +143,7 @@ class LogicCircuitSimulator:
         canvas.pack()
 
         # Title
-        canvas.create_text(500, 30, text="Logic Circuit Diagram",
-                           font=('Arial', 18, 'bold'), fill='darkblue')
+        canvas.create_text(500, 30, text="Logic Circuit Diagram", font=('Arial', 18, 'bold'), fill='darkblue')
 
         # Draw proper gate shapes
         def draw_and_gate(x, y):
@@ -153,7 +152,7 @@ class LogicCircuitSimulator:
             # Curved part
             canvas.create_arc(x + 20, y, x + 60, y + 40, start=270, extent=180, fill='lightblue', outline='black', width=2)
             # text
-            canvas.create_text(x + 30, y + 20, text="AND", font=('Arial', 10, 'bold'))
+            canvas.create_text(x + 20, y + 20, text="AND", font=('Arial', 10, 'bold'))
             return x + 60, y + 20
 
         def draw_or_gate(x, y):
@@ -224,14 +223,24 @@ class LogicCircuitSimulator:
 
         if out_x:
             # Draw output label
-            canvas.create_line(out_x, out_y, out_x + 30, out_y, width=2)
-            canvas.create_text(out_x + 70, out_y, text="OUTPUT", font=('Arial', 14, 'bold'), fill='blue')
+            canvas.create_line(out_x, out_y, out_x + 100, out_y, width=2, fill='blue')
+            canvas.create_text(out_x + 150, out_y, text="OUTPUT", font=('Arial', 14, 'bold'), fill='blue')
 
         root.mainloop()
 
     def run(self):
         # Main interface
         expression = input("Enter logic expression: ")
+
+        try:
+            parsed = self.parse_expression(expression)
+            rpn = self.change_to_rpn(parsed)
+            expression_tree = self.build_expression_tree(rpn)
+            if expression_tree is None:
+                raise ValueError("Invalid expression")
+        except:
+            print("\n❌ Invalid expression! Please check your syntax.")
+            expression = input("Enter logic expression: ")
 
         parsed = self.parse_expression(expression)
         rpn = self.change_to_rpn(parsed)
