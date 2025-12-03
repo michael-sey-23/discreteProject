@@ -236,10 +236,10 @@ class LogicCircuitSimulator:
             parsed = self.parse_expression(expression)
             rpn = self.change_to_rpn(parsed)
             expression_tree = self.build_expression_tree(rpn)
-            if expression_tree is None:
+            if expression_tree is None or len(self.variables) == 0:
                 raise ValueError("Invalid expression")
         except:
-            print("\n❌ Invalid expression! Please check your syntax.")
+            print("\n Invalid expression! Please check your syntax.")
             expression = input("Enter logic expression: ")
 
         while True:
