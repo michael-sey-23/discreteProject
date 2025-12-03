@@ -242,10 +242,6 @@ class LogicCircuitSimulator:
             print("\n❌ Invalid expression! Please check your syntax.")
             expression = input("Enter logic expression: ")
 
-        parsed = self.parse_expression(expression)
-        rpn = self.change_to_rpn(parsed)
-        expression_tree = self.build_expression_tree(rpn)
-
         while True:
             print("\n1. Show truth table")
             print("2. Visualize circuit")
